@@ -50,9 +50,12 @@ class NetConnection extends StatelessWidget {
       builder: (context, snapshot) {
         if (snapshot.data == true) {
           return MyHomePage();
+        } else if (snapshot.data == false) {
+          return NoInterNet();
         }
-
-        return NoInterNet();
+        return Center(
+          child: CircularProgressIndicator(),
+        );
       },
     );
   }

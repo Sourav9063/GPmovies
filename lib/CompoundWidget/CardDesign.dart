@@ -181,7 +181,7 @@ class CardPopularMovie extends StatelessWidget {
               ),
               Positioned(
                   right: 0,
-                  width: ScrnSize.width * .35,
+                  width: ScrnSize.width * .38,
                   top: ScrnSize.height * .025,
                   height: ScrnSize.height * .20,
                   child: Padding(
@@ -285,47 +285,51 @@ class CardPopularTV extends StatelessWidget {
         height: ScrnSize.height * .25,
         width: ScrnSize.height * .25,
         decoration: BoxDecoration(
-            //     image: DecorationImage(
-            //         image: NetworkImage(
-            //   "https://image.tmdb.org/t/p/original/" + result.posterPath ??
-            //       result.backdropPath,
+          //     image: DecorationImage(
+          //         image: NetworkImage(
+          //   "https://image.tmdb.org/t/p/original/" + result.posterPath ??
+          //       result.backdropPath,
 
-            // ))
-            color: Colors.blueAccent.shade400),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(result.name ?? result.originalName ?? "Not Found"),
-            Row(
-              children: [
-                FittedBox(
-                  fit: BoxFit.fitWidth,
-                  child: RatingBarIndicator(
-                    itemSize: ScrnSize.width * .05,
-                    itemCount: 5,
-                    rating: result.voteAverage / 2,
-                    itemBuilder: (context, index) {
-                      return Icon(
-                        Icons.star,
-                        color: Colors.amber,
-                      );
-                    },
+          // ))
+          color: Color(0xff000C18),
+        ),
+        child: Center(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(result.name ?? result.originalName ?? "Not Found"),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  FittedBox(
+                    fit: BoxFit.fitWidth,
+                    child: RatingBarIndicator(
+                      itemSize: ScrnSize.width * .05,
+                      itemCount: 5,
+                      rating: result.voteAverage / 2,
+                      itemBuilder: (context, index) {
+                        return Icon(
+                          Icons.star,
+                          color: Colors.amber,
+                        );
+                      },
+                    ),
                   ),
-                ),
-                SizedBox(
-                  width: 2,
-                ),
-                Text(
-                  result.voteAverage.toString(),
-                  style: TextStyle(
-                      color: Colors.amber,
-                      fontWeight: FontWeight.bold,
-                      fontSize: ScrnSize.width * .041),
-                )
-              ],
-            ),
-          ],
+                  SizedBox(
+                    width: 2,
+                  ),
+                  Text(
+                    result.voteAverage.toString(),
+                    style: TextStyle(
+                        color: Colors.amber,
+                        fontWeight: FontWeight.bold,
+                        fontSize: ScrnSize.width * .041),
+                  )
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );
