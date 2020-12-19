@@ -1,3 +1,4 @@
+import 'package:GPmovies/Backend/Favourite.dart';
 import 'package:GPmovies/Backend/TVdetails.dart';
 import 'package:GPmovies/Constant.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -13,10 +14,28 @@ class TVdetailsScreen extends StatefulWidget {
 
 class _TVdetailsScreenState extends State<TVdetailsScreen> {
   TVdetails tVdetails;
+  IconData icons = Icons.favorite_border;
+  List<String> list;
   Dio dio = Dio();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          list.add("https://api.themoviedb.org/3/tv/" +
+              widget.id.toString() +
+              "?api_key=1a97f3b8d5deee1d649c0025f3acf75c");
+          Favourites.addFvrt(list);
+          setState(() {
+            icons = Icons.favorite;
+          });
+        },
+        child: Icon(
+          icons,
+          color: Colors.pinkAccent.shade400,
+          size: ScrnSize.width * .1,
+        ),
+      ),
       body: FutureBuilder(
         future: dio.get("https://api.themoviedb.org/3/tv/" +
             widget.id.toString() +
