@@ -24,7 +24,7 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
   @override
   void initState() {
     super.initState();
-    list = Favourites.getList();
+   
   }
 
   @override
