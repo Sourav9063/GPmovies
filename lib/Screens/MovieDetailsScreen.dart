@@ -1,3 +1,4 @@
+import 'package:GPmovies/Backend/Favourite.dart';
 import 'package:GPmovies/Backend/MovieDetails.dart';
 
 import 'package:GPmovies/Constant.dart';
@@ -17,10 +18,35 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
   Dio dio = Dio();
 
   MVdetails movieDetails;
+  IconData icons = Icons.favorite_border;
+  List<String> list;
+
+  @override
+  void initState() {
+    super.initState();
+    list = Favourites.getList();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: Colors.pinkAccent,
+        onPressed: () {
+          list.add("https://api.themoviedb.org/3/tv/" +
+              widget.id.toString() +
+              "?api_key=1a97f3b8d5deee1d649c0025f3acf75c");
+          Favourites.addFvrt(list);
+          setState(() {
+            icons = Icons.favorite;
+          });
+        },
+        child: Icon(
+          icons,
+          color: Colors.white,
+          size: ScrnSize.width * .1,
+        ),
+      ),
       body: FutureBuilder(
         future: dio.get("https://api.themoviedb.org/3/movie/" +
             widget.id.toString() +

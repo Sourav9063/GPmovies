@@ -13,10 +13,10 @@ class TVdetailsScreen extends StatefulWidget {
 }
 
 class _TVdetailsScreenState extends State<TVdetailsScreen> {
-  TVdetails tVdetails;
+  TVdetails tVdetails;  Dio dio = Dio();
   IconData icons = Icons.favorite_border;
   List<String> list;
-  Dio dio = Dio();
+
   @override
   void initState() {
     super.initState();
