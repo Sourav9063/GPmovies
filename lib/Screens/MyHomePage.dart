@@ -1,4 +1,5 @@
 import 'package:GPmovies/Backend/TrendingData.dart';
+import 'package:GPmovies/CompoundWidget/CardDesign.dart';
 import 'package:GPmovies/Constant.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
@@ -17,10 +18,6 @@ class _MyHomePageState extends State<MyHomePage> {
   Dio dio = Dio();
   TrendingData trendingData;
 
-  @override
-  void initState() {
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -33,14 +30,11 @@ class _MyHomePageState extends State<MyHomePage> {
               return ListView.builder(
                 itemCount: trendingData.results.length,
                 itemBuilder: (context, index) {
-                  return Text(trendingData.results[index].title ??
-                      trendingData.results[index].name ??
-                      trendingData.results[index].originalName ??
-                      "Not avilable");
+                  return CardTrending(result: trendingData.results[index]);
                 },
               );
             } else if (snapshot.hasError) {}
-            return CircularProgressIndicator();
+            return Center(child: CircularProgressIndicator());
           }),
     );
   }
