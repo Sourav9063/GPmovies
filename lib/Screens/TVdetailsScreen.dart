@@ -18,9 +18,16 @@ class _TVdetailsScreenState extends State<TVdetailsScreen> {
   List<String> list;
   Dio dio = Dio();
   @override
+  void initState() {
+    super.initState();
+    list = Favourites.getList();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
+        backgroundColor: Colors.pinkAccent,
         onPressed: () {
           list.add("https://api.themoviedb.org/3/tv/" +
               widget.id.toString() +
@@ -32,7 +39,7 @@ class _TVdetailsScreenState extends State<TVdetailsScreen> {
         },
         child: Icon(
           icons,
-          color: Colors.pinkAccent.shade400,
+          color: Colors.white,
           size: ScrnSize.width * .1,
         ),
       ),
