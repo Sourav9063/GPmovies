@@ -1,5 +1,6 @@
 # GPmovies
  GP hackathon
+full project is on not-competition branch
 
 Verdicts :
  1.Trending Scrollview is fully done.
