@@ -243,7 +243,7 @@ class CardPopularMovie extends StatelessWidget {
                   child: CachedNetworkImage(
                     imageUrl: "https://image.tmdb.org/t/p/original/" +
                             result.posterPath ??
-                        result.backdropPath,
+                        result.backdropPath??"Error",
                     fit: BoxFit.cover,
                     // memCacheHeight: 1200,
                     memCacheWidth: 300,
@@ -279,54 +279,121 @@ class CardPopularTV extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Container(
-        height: ScrnSize.height * .25,
-        width: ScrnSize.height * .25,
-        decoration: BoxDecoration(
-          //     image: DecorationImage(
-          //         image: NetworkImage(
-          //   "https://image.tmdb.org/t/p/original/" + result.posterPath ??
-          //       result.backdropPath,
+String link="nlu";
+    try{
+      link= "https://image.tmdb.org/t/p/original/" +
+                            result.posterPath ??
+                        result.backdropPath??"Error";
 
-          // ))
-          color: Color(0xff000C18),
-        ),
-        child: Center(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.center,
+    }catch(e){
+      print(e.toString());
+
+    }
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 8),
+      child: InkWell(
+        onTap: () {
+          Navigator.push(
+            context,
+            CupertinoPageRoute(
+                builder: (context) => TVdetailsScreen(id: result.id)),
+          );
+        },
+        child: Container(
+          height: ScrnSize.height * .25,
+          width: ScrnSize.width * .7,
+          child: Stack(
             children: [
-              Text(result.name ?? result.originalName ?? "Not Found"),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  FittedBox(
-                    fit: BoxFit.fitWidth,
-                    child: RatingBarIndicator(
-                      itemSize: ScrnSize.width * .05,
-                      itemCount: 5,
-                      rating: result.voteAverage / 2,
-                      itemBuilder: (context, index) {
-                        return Icon(
-                          Icons.star,
-                          color: Colors.amber,
-                        );
-                      },
+              Positioned(
+                top: ScrnSize.height * .025,
+                left: 0,
+                height: ScrnSize.height * .20,
+                width: ScrnSize.width,
+                child: Container(
+                  color: Color(0xff002f00),
+                ),
+              ),
+              Positioned(
+                  right: 0,
+                  width: ScrnSize.width * .38,
+                  top: ScrnSize.height * .025,
+                  height: ScrnSize.height * .20,
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Expanded(
+                          child: Text(
+                            result.name ?? result.originalName ?? "Not found",
+                            overflow: TextOverflow.fade,
+                            textScaleFactor: 1.2,
+                          ),
+                        ),
+                        Expanded(
+                          child: Row(
+                            children: [
+                              FittedBox(
+                                fit: BoxFit.fitWidth,
+                                child: RatingBarIndicator(
+                                  itemSize: ScrnSize.width * .05,
+                                  itemCount: 5,
+                                  rating: result.voteAverage / 2,
+                                  itemBuilder: (context, index) {
+                                    return Icon(
+                                      Icons.star,
+                                      color: Colors.amber,
+                                    );
+                                  },
+                                ),
+                              ),
+                              SizedBox(
+                                width: 2,
+                              ),
+                              Text(
+                                result.voteAverage.toString(),
+                                style: TextStyle(
+                                    color: Colors.amber,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: ScrnSize.width * .041),
+                              )
+                            ],
+                          ),
+                        ),
+                        
+                      ],
+                    ),
+                  )),
+              Positioned(
+                top: 0,
+                left: ScrnSize.width * .0,
+                height: ScrnSize.height * .25,
+                child: Container(
+                  decoration:
+                      BoxDecoration(borderRadius: BorderRadius.circular(4)),
+                  child: CachedNetworkImage(
+                    imageUrl:link,
+                    fit: BoxFit.cover,
+                    // memCacheHeight: 1200,
+                    memCacheWidth: 300,
+                    errorWidget: (context, error, _) {
+                      return Center(
+                        child: Icon(
+                          Icons.error,
+                          color: Colors.red,
+                          size: ScrnSize.width * .2,
+                        ),
+                      );
+                    },
+                    progressIndicatorBuilder:
+                        (context, url, downloadProgress) => Align(
+                      alignment: Alignment(-.01, .1),
+                      child: CircularProgressIndicator(
+                          value: downloadProgress.progress),
                     ),
                   ),
-                  SizedBox(
-                    width: 2,
-                  ),
-                  Text(
-                    result.voteAverage.toString(),
-                    style: TextStyle(
-                        color: Colors.amber,
-                        fontWeight: FontWeight.bold,
-                        fontSize: ScrnSize.width * .041),
-                  )
-                ],
+                ),
               ),
             ],
           ),

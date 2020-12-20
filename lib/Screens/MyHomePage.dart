@@ -68,7 +68,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     if (snapshot.hasData) {
                       PopularTvData tvData =
                           popularTvDataFromJson(snapshot.data.toString());
-                      print(tvData.resultsTv[2].name);
+                      // print(tvData.resultsTv[2].name);
                       print(snapshot.data.toString());
                       return ListView.builder(
                         physics: BouncingScrollPhysics(),

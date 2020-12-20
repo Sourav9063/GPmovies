@@ -1,15 +1,18 @@
 import 'package:shared_preferences/shared_preferences.dart';
 
-String key = "StringList";
+String _linkStringkey = "StringList";
 
 class Favourites {
   static void addFvrt(List<String> fvrt) async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    sharedPreferences.setStringList(key, fvrt);
+   await sharedPreferences.setStringList(_linkStringkey, fvrt);
   }
 
-  static getList() async {
+  static Future<List<String>> getList() async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    return sharedPreferences.getStringList(key);
+    
+    return  sharedPreferences.getStringList(_linkStringkey);
   }
+
+
 }
