@@ -27,6 +27,9 @@ dependencies:
   cupertino_icons: ^1.0.0
   dio: ^3.0.10
   flutter_rating_bar: ^3.2.0+1
+  hive: ^1.4.4+1
+  scrollable_bottom_sheet: ^0.2.1
+  scrollable_positioned_list: ^0.1.8
   shared_preferences: ^0.5.12+4
 
 dev_dependencies:

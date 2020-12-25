@@ -3,10 +3,13 @@ import 'package:GPmovies/Backend/PopularTVData.dart';
 import 'package:GPmovies/Backend/TrendingData.dart';
 import 'package:GPmovies/CompoundWidget/CardDesign.dart';
 import 'package:GPmovies/Constant.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
 class MyHomePage extends StatefulWidget {
   MyHomePage({
@@ -21,6 +24,9 @@ class _MyHomePageState extends State<MyHomePage> {
   Dio dio = Dio();
   TrendingData trendingData;
   PopularMoviesData popularMoviesData;
+
+  ItemPositionsListener itemPositionsListener = ItemPositionsListener.create();
+  String tvBackGround;
 
   @override
   Widget build(BuildContext context) {
@@ -70,14 +76,74 @@ class _MyHomePageState extends State<MyHomePage> {
                           popularTvDataFromJson(snapshot.data.toString());
                       // print(tvData.resultsTv[2].name);
                       print(snapshot.data.toString());
-                      return ListView.builder(
-                        physics: BouncingScrollPhysics(),
-                        scrollDirection: Axis.horizontal,
-                        itemCount: tvData.resultsTv.length,
-                        itemBuilder: (context, index) {
-                          return CardPopularTV(result: tvData.resultsTv[index]);
-                        },
-                      );
+                      return Stack(children: [
+                        ValueListenableBuilder<Iterable<ItemPosition>>(
+                          valueListenable: itemPositionsListener.itemPositions,
+                          builder: (context, value, child) {
+                            // print(value.first.index);
+                            String ilink = "Error";
+
+                            ilink = "https://image.tmdb.org/t/p/original/" +
+                                    tvData.resultsTv[value.first.index]
+                                        .backdropPath ??
+                                tvData
+                                    .resultsTv[value.first.index].posterPath ??
+                                "Not";
+
+                            return CachedNetworkImage(
+                              imageUrl: ilink,
+                              fit: BoxFit.cover,
+                              errorWidget: (context, error, stackTrace) {
+                                return Center(
+                                  child: Icon(
+                                    Icons.error,
+                                    size: 100,
+                                  ),
+                                );
+                              },
+                              memCacheWidth: 300,
+                              progressIndicatorBuilder:
+                                  (context, url, progress) {
+                                return Center(
+                                  child: CircularProgressIndicator(),
+                                );
+                              },
+                            );
+                          },
+                        ),
+                        ScrollablePositionedList.builder(
+                          itemPositionsListener: itemPositionsListener,
+                          physics: BouncingScrollPhysics(),
+                          scrollDirection: Axis.horizontal,
+                          itemCount: tvData.resultsTv.length,
+                          itemBuilder: (context, index) {
+                            return CardPopularTV(
+                                result: tvData.resultsTv[index]);
+                          },
+                        ),
+                      ]);
+
+                      // return RotatedBox(
+                      //   quarterTurns: 3,
+                      //   child: ListWheelScrollView.useDelegate(
+                      //     physics: BouncingScrollPhysics(),
+                      //     // magnification: 10,
+                      //       // diameterRatio: 5,
+                      //       itemExtent: ScrnSize.width * .7,
+
+                      //       childDelegate: ListWheelChildBuilderDelegate(
+
+                      //         childCount: tvData.resultsTv.length,
+                      //         builder: (context, index) {
+                      //           // print(index);
+                      //           return RotatedBox(
+                      //             quarterTurns: 1,
+                      //             child: CardPopularTV(
+                      //                 result: tvData.resultsTv[index]),
+                      //           );
+                      //         },
+                      //       )),
+                      // );
                     } else if (snapshot.hasError) {}
                     return Center(child: CircularProgressIndicator());
                   }),
